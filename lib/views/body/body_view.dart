@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/utils/color.dart';
+import 'package:news_app/views/home/home_view.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class BodyView extends StatelessWidget {
@@ -8,7 +9,7 @@ class BodyView extends StatelessWidget {
   List<Widget> _buildScreens() {
     return [
       const Scaffold(),
-      const Scaffold(),
+      const HomeView(),
       const Scaffold(),
     ];
   }
@@ -16,20 +17,20 @@ class BodyView extends StatelessWidget {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.home),
-        title: ("Home"),
+        icon: const Icon(Icons.bookmark),
+        title: ("Save"),
         activeColorPrimary: kPrimaryColor,
         inactiveColorPrimary: kSecondaryColor,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home,color: kSecondaryColor,),
-        title: ("Settings"),
+        title: ("Home"),
         activeColorPrimary: kPrimaryColor,
         inactiveColorPrimary: kSecondaryColor,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.home),
-        title: ("Settings"),
+        icon: const Icon(Icons.person),
+        title: ("Profile"),
         activeColorPrimary: kPrimaryColor,
         inactiveColorPrimary: kSecondaryColor,
       ),
