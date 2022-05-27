@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:news_app/utils/color.dart';
 
 class AppTextField extends StatelessWidget {
-  const AppTextField({Key? key}) : super(key: key);
-
+  const AppTextField({Key? key, this.onSubmitted, required this.controller}) : super(key: key);
+final Function(String)? onSubmitted;
+final TextEditingController controller;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,8 +14,10 @@ class AppTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           color: kAccentColor.shade700),
       child: TextFormField(
+        controller: controller,
+        onFieldSubmitted: onSubmitted,
         decoration: const InputDecoration(
-          // prefixIcon: Icon(Icons.search),
+          prefixIcon: Icon(Icons.search),
           hintText: "Search",
           hintStyle: TextStyle(
             fontSize: 14,

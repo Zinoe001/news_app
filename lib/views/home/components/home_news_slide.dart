@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/views/home/components/home_news_card.dart';
+import 'package:news_app/views/home/components/health/health_news_card.dart';
+// import 'package:news_app/views/home/components/latest/latest_news_card.dart';
+import 'package:news_app/views/home/components/news_card/business_news_card.dart';
+import 'package:news_app/views/home/components/news_card/entertainment_news_card.dart';
+import 'package:news_app/views/home/components/news_card/sports_news_card.dart';
+import 'package:news_app/views/home/components/news_card/top_headline_news_card.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class HomeSlide extends StatelessWidget {
@@ -7,15 +12,15 @@ class HomeSlide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiSliver(
-      children: const  [
-        HomeNewsCard(title: "Popular"),
-        HomeNewsCard(title: "Trending"),
-        HomeNewsCard(title: "Newest"),
-        HomeNewsCard(title: "Top"),
-        HomeNewsCard(title: "Politics"),
-        HomeNewsCard(title: "Art"),
-        HomeNewsCard(title: "Sports"),
-        HomeNewsCard(title: "Entertainments"),
+      children: const [
+        // HomeNewsCard(title: "Popular"),
+        // HomeNewsCard(title: "Trending"),
+        // LatestNewsCard(title: "Latest"),
+        TopHeadlinesNewsCard(title: "TopHeadlines"),
+        BusinessNewsCard(title: "Business"),
+        HealthNewsCard(title: "Health"),
+        SportsNewsCard(title: "Sports"),
+        EntertainmentNewsCard(title: "Entertainments"),
       ],
     );
   }

@@ -9,7 +9,7 @@ class BodyView extends StatelessWidget {
   List<Widget> _buildScreens() {
     return [
       const Scaffold(),
-      const HomeView(),
+      HomeView(),
       const Scaffold(),
     ];
   }

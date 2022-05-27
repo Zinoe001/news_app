@@ -4,8 +4,8 @@ import 'package:news_app/utils/color.dart';
 import 'package:news_app/utils/text.dart';
 import 'package:news_app/views/news/news_view.dart';
 
-class HomeNewsItem extends StatelessWidget {
-  const HomeNewsItem(
+class HealthNewsItem extends StatelessWidget {
+  const HealthNewsItem(
       {Key? key,
       required this.title,
       required this.authur,
@@ -30,7 +30,7 @@ class HomeNewsItem extends StatelessWidget {
             ),
             child: CachedNetworkImage(
               imageUrl: image ??
-                  "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg",
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png",
               fit: BoxFit.cover,
             ),
           ),
@@ -62,9 +62,9 @@ class HomeNewsItem extends StatelessWidget {
                 MaterialPageRoute(
                     builder: (context) => NewsView(
                           author: authur,
-                          content: list["content"],
-                          image: image ?? "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg",
-                          time: list["publishedAt"],
+                          content: list["description"],
+                          image: image ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png",
+                          time: list["published_at"],
                           title: title,
                         ))),
             icon: Icon(
