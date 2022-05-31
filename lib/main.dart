@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/utils/color.dart';
 import 'package:news_app/views/body/body_view.dart';
-
 void main() {
-  runApp(const MyApp());
+  runApp( const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,9 +23,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: kPrimaryColor,
       ),
-      home: BodyView(),
+      home: const BodyView(),
     );
   }
 }

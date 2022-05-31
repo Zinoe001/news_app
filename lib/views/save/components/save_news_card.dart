@@ -2,15 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/utils/color.dart';
 import 'package:news_app/utils/text.dart';
-import 'package:news_app/views/news/news_view.dart';
 
-class HealthNewsItem extends StatelessWidget {
-  const HealthNewsItem(
+
+class SavedNewsCard extends StatelessWidget {
+  const SavedNewsCard(
       {Key? key,
       required this.title,
       required this.authur,
       required this.image,
-      required this.list})
+      required this.list,})
       : super(key: key);
   final String title;
   final String? image;
@@ -30,7 +30,7 @@ class HealthNewsItem extends StatelessWidget {
             ),
             child: CachedNetworkImage(
               imageUrl: image ??
-                  "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png",
+                  "https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg",
               fit: BoxFit.cover,
             ),
           ),
@@ -54,22 +54,6 @@ class HealthNewsItem extends StatelessWidget {
                         color: kAccentColor.shade400,
                       ),
               ],
-            ),
-          ),
-          IconButton(
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => NewsView(
-                          author: authur,
-                          content: list["description"],
-                          image: image ?? "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png",
-                          time: list["published_at"],
-                          title: title,
-                        ))),
-            icon: Icon(
-              Icons.arrow_forward_rounded,
-              color: kSecondaryColor.shade500,
             ),
           ),
         ],

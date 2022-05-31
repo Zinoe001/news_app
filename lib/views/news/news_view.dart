@@ -1,23 +1,36 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:news_app/services/preferences_services.dart';
 import 'package:news_app/utils/color.dart';
+import 'package:news_app/utils/function.dart';
 import 'package:news_app/utils/text.dart';
+import 'package:news_app/views/widgets/news_snackbar.dart';
 
-class NewsView extends StatelessWidget {
-  const NewsView(
-      {Key? key,
-      required this.title,
-      required this.author,
-      required this.image,
-      required this.time,
-      required this.content})
-      : super(key: key);
+class NewsView extends StatefulWidget {
+  const NewsView({
+    Key? key,
+    required this.title,
+    required this.author,
+    required this.image,
+    required this.time,
+    required this.content,
+    required this.getData,
+  }) : super(key: key);
   final String title;
   final String? author;
   final String image;
   final String? time;
   final String? content;
+  final Function(Map<String, dynamic>) getData;
+  @override
+  State<NewsView> createState() => _NewsViewState();
+}
+
+class _NewsViewState extends State<NewsView> {
+  final NewsFlushbar _flushbar = NewsFlushbar();
+  List<Map<String, dynamic>> list = [];
+  bool saved = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,9 +49,33 @@ class NewsView extends StatelessWidget {
                 AppText.heading5(text: "Article"),
                 const Spacer(),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    saved = !saved;
+                    if (saved == true) {
+                      widget.getData({
+                        "author": widget.author,
+                        "image": widget.image,
+                        "title": widget.title,
+                        "date_time": widget.time,
+                        "content": widget.content,
+                      });
+                      _flushbar.showSuccessful(
+                        context,
+                        title: "Saved sucessfully ",
+                        message:
+                            "check your saved list to check for the news you have recently saved",
+                      );
+                    }else{
+                      _flushbar.showError(
+                        context,
+                        title: "Not Saved",
+                        message:
+                            "removed from your saved list",
+                      );
+                    }
+                  },
                   icon: Icon(
-                    Icons.bookmark,
+                    saved ? Icons.bookmark_add_outlined : Icons.bookmark,
                     color: kSecondaryColor,
                   ),
                 ),
@@ -55,7 +92,7 @@ class NewsView extends StatelessWidget {
                 const SizedBox(width: 15),
                 Expanded(
                   child: AppText.heading4(
-                    text: title,
+                    text: widget.title,
                     multilines: true,
                   ),
                 ),
@@ -71,7 +108,7 @@ class NewsView extends StatelessWidget {
                     style: const TextStyle(color: Colors.black),
                     children: [
                       TextSpan(
-                        text: author ?? "Anonymous",
+                        text: widget.author ?? "Anonymous",
                         style: TextStyle(color: kSecondaryColor, fontSize: 12),
                       )
                     ],
@@ -83,10 +120,15 @@ class NewsView extends StatelessWidget {
                   backgroundColor: kSecondaryColor,
                 ),
                 const SizedBox(width: 5),
-                time == null ? AppText.caption(text: "No Date") :
-                AppText.caption(
-                    text: DateFormat("MMMM dd yyyy")
-                        .format(DateTime.parse(time!.substring(0, 10))))
+                widget.time == null
+                    ? AppText.caption(text: "No Date")
+                    : AppText.caption(
+                        text: DateFormat("MMMM dd yyyy")
+                            .format(DateTime.parse(widget.time!)),
+                      ),
+                //      time == null ? AppText.caption(text: "No Date") :
+                // AppText.caption(
+                //     text: time!),
               ],
             ),
             const SizedBox(height: 12),
@@ -94,26 +136,22 @@ class NewsView extends StatelessWidget {
               aspectRatio: 225 / 175,
               child: Container(
                 clipBehavior: Clip.hardEdge,
-                decoration:
-                    BoxDecoration(
-                      boxShadow:  [
-                        BoxShadow( 
-                          color: kAccentColor,
-                          blurRadius: 4,
-                          spreadRadius: 1,
-                          offset: const Offset(0,1)
-                        )
-                      ],
-                      borderRadius: BorderRadius.circular(20)),
+                decoration: BoxDecoration(boxShadow: [
+                  BoxShadow(
+                      color: kAccentColor,
+                      blurRadius: 4,
+                      spreadRadius: 1,
+                      offset: const Offset(0, 1))
+                ], borderRadius: BorderRadius.circular(20)),
                 child: CachedNetworkImage(
-                  imageUrl: image,
+                  imageUrl: widget.image,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             const SizedBox(height: 12),
             AppText.buttton(
-              text: content ?? "No Content for this News",
+              text: widget.content ?? "No Content for this News",
               multilines: true,
             )
           ]),

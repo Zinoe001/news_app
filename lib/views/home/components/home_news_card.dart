@@ -1,32 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/utils/color.dart';
-import 'package:news_app/utils/function.dart';
 import 'package:news_app/utils/text.dart';
 import 'package:news_app/views/home/components/home_news_item.dart';
 import 'package:news_app/views/news/news_list_view.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-class SportsNewsCard extends StatefulWidget {
-  const SportsNewsCard({Key? key, required this.title}) : super(key: key);
+class HomeNewsCard extends StatelessWidget {
+  const HomeNewsCard({
+    Key? key,
+    required this.title, 
+    required this.list, required this.data,
+  }) : super(key: key);
   final String title;
-
-  @override
-  State<SportsNewsCard> createState() => _SportsNewsCardState();
-}
-
-class _SportsNewsCardState extends State<SportsNewsCard> {
-  static final NewsFunctions functions = NewsFunctions();
-  @override
-  void initState() {
-    Future.delayed(const Duration(seconds: 2), () => getSportsNews());
-    super.initState();
-  }
-getSportsNews()async{
-  await functions.getSportsNews();
-  setState(() {
-    functions.sportsNews;
-  });
-}
+  final List<Map<String,dynamic>> list;
+   final Function(Map<String,dynamic>) data;
   @override
   Widget build(BuildContext context) {
     return MultiSliver(
@@ -40,7 +27,7 @@ getSportsNews()async{
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 AppText.heading6(
-                  text: widget.title,
+                  text: title,
                 ),
                 const Spacer(),
                 InkWell(
@@ -48,8 +35,8 @@ getSportsNews()async{
                       context,
                       MaterialPageRoute(
                           builder: (context) => NewsListView(
-                                title: widget.title,
-                                list: functions.sportsNews,
+                                title: title, 
+                                data: data,
                               ))),
                   child: Container(
                     padding:
@@ -70,23 +57,37 @@ getSportsNews()async{
             ),
           ),
         ),
-         functions.sportsNews.isEmpty
-                              ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              :
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => HomeNewsItem(
-              authur: functions.sportsNews[index]["author"],
-              title: functions.sportsNews[index]["title"],
-              image: functions.sportsNews[index]["urlToImage"],
-              list: functions.sportsNews[index],
-            ),
-            childCount: functions.sportsNews.length ~/ 5,
-          ),
-        ),
+        list.isEmpty
+            ? const HomeNewsCardSkeleton()
+            : SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => HomeNewsItem(
+                    authur: list[index]["author"],
+                    title: list[index]["title"],
+                    image: list[index]["media"],
+                    list: list[index], 
+                    data: data,
+                  ),
+                  childCount: 4,
+                ),
+              ),
       ],
+    );
+  }
+}
+
+class HomeNewsCardSkeleton extends StatelessWidget {
+  const HomeNewsCardSkeleton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) => const HomeNewsItemSkeleton(),
+        childCount: 4,
+      ),
     );
   }
 }

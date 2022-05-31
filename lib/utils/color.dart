@@ -44,3 +44,5 @@ Map<int, Color> _accentColor = {
 };
 
 final MaterialColor kAccentColor = MaterialColor(0XFF666666, _accentColor);
+
+Color kSkelenton = Colors.black.withOpacity(0.4);

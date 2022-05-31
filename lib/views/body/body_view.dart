@@ -1,16 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/services/preferences_services.dart';
 import 'package:news_app/utils/color.dart';
+import 'package:news_app/utils/function.dart';
 import 'package:news_app/views/home/home_view.dart';
+import 'package:news_app/views/profille/profile_view.dart';
+import 'package:news_app/views/save/save_view.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-class BodyView extends StatelessWidget {
-  BodyView({Key? key}) : super(key: key);
+class BodyView extends StatefulWidget {
+  const BodyView({Key? key}) : super(key: key);
+
+  @override
+  State<BodyView> createState() => _BodyViewState();
+}
+
+class _BodyViewState extends State<BodyView> {
+  final PreferencesServices _prefs = PreferencesServices();
+  final NewsFunctions _functions = NewsFunctions();
+  late List<Map<String, dynamic>> list = [];
+  @override
+  void initState() {
+    saved();
+    super.initState();
+  }
+
+// setStateIfMounted(() {
+//
+//       list;
+//       print(list.length);
+//     });
+//  void setStateIfMounted(f) {
+//     if (mounted) setState(f);
+//   }
+  saved() {
+    print("loading");
+    if (_functions.savedNews.isEmpty) {
+      getSaved();
+    } else {
+      list = _functions.savedNews;
+      print(list.length);
+    }
+    print("done");
+  }
+
+  Future<void> getSaved() async {
+    await _prefs.init();
+    setState(() {
+      print("getting data from saved list");
+      _functions.savedNews.insertAll(0, _prefs.storedList);
+      print(_functions.savedNews);
+      print(_functions.savedNews.length);
+    });
+  }
+
+  data(Map<String, dynamic> item) {
+    print("taking data");
+    print(item);
+    setState(() {
+      list.add(item);
+      list.toSet().toList();
+    });
+    print(list);
+
+    _prefs.saveNewsList(list);
+    print("done");
+  }
 
   List<Widget> _buildScreens() {
     return [
-      const Scaffold(),
-      HomeView(),
-      const Scaffold(),
+      SavedView(
+        item: list,
+      ),
+      HomeView(
+        data: data,
+      ),
+      const ProfileView(),
     ];
   }
 
@@ -23,7 +87,10 @@ class BodyView extends StatelessWidget {
         inactiveColorPrimary: kSecondaryColor,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.home,color: kSecondaryColor,),
+        icon: Icon(
+          Icons.home,
+          color: kSecondaryColor,
+        ),
         title: ("Home"),
         activeColorPrimary: kPrimaryColor,
         inactiveColorPrimary: kSecondaryColor,
@@ -37,7 +104,8 @@ class BodyView extends StatelessWidget {
     ];
   }
 
-  final PersistentTabController _controller = PersistentTabController(initialIndex: 1);
+  final PersistentTabController _controller =
+      PersistentTabController(initialIndex: 1);
 
   @override
   Widget build(BuildContext context) {
